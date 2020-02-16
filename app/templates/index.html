@@ -1,0 +1,147 @@
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset = "utf-8">
+		<meta http-equiv="X-UA-Compatible" content = "IE=edge">
+		<meta name = "viewport" content = "width=device-width, initial-scale=1">
+		<title>online calculate</title>
+		{% bootstrap_css %}
+	    {% bootstrap_javascript %}
+		<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+	</head>	
+
+	<body>
+	
+		<div class="container-fluid">
+			<div class = "low">
+				<div class="col-xs-1 col-sm-4"></div>
+				<div id = computer class = "col-xs-10 col-sm-6">
+					<input type="text" id = "txt_code" name = "txt_code" value="" class = "form-control input_show" placeholder="计算公式" disabled>
+					<input type="text" id = "txt_result" name = "txt_result"value="" class = "form-control input_show" placeholder="结果" disabled>
+					<br />
+					<div>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_7()">7</button>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_8()">8</button>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_9()">9</button>
+						<br />
+						<button type="button" class="btn btn-default btn_num" onclick="fun_4()">4</button>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_5()">5</button>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_6()">6</button>
+						<br />
+						<button type="button" class="btn btn-default btn_num" onclick="fun_1()">1</button>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_2()">2</button>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_3()">3</button>
+						<br />
+						<button type="button" class="btn btn-default btn_num" onclick="fun_0()">0</button>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_00()"> </button>
+						<button type="button" class="btn btn-default btn_num" onclick="fun_dot()">.</button>
+					</div>
+
+					<div>
+						<br />
+						<button type="button" class="btn btn-success btn_num" id="lgbut_clear"onclick="fun_clear()">清除</button>
+						<button type="button" class="btn btn-info btn_num" id="remove"onclick="fun_remove()">返回</button>
+						<button type="button" class = "btn btn-primary btn-num" id="lgbut_compute">计算</button>
+					</div>
+				</div>
+				<div class="col-xs-1 col-sm-2"></div>
+			</div>
+
+			<div class="extendContent"> </div>
+		<script>
+		var x = document.getElementById("txt_code");
+		var y = document.getElementById("txt_result");
+
+		function fun_7(){
+			x.value += '7';
+		}
+		function fun_8(){
+			x.value += '8';
+		}
+		function fun_9(){
+			x.value += '9';
+		}
+		function fun_div(){
+			x.value += '/';
+		}
+		function fun_4(){
+			x.value += '4';
+		}
+		function fun_5(){
+			x.value += '5';
+		}
+		function fun_6(){
+			x.value += '6';
+		}
+		function fun_mul(){
+			x.value += '*';
+		}
+		function fun_1(){
+			x.value += '1';
+		}
+		function fun_2(){
+			x.value += '2';
+		}
+		function fun_3(){
+			x.value += '3';
+		}
+		function fun_sub(){
+			x.value += '-';
+		}
+		function fun_0(){
+			x.value += '0';
+		}
+		function fun_00(){
+			x.value += ' ';
+		}
+		function fun_dot(){
+			x.value += '.';
+		}
+		function fun_add(){
+			x.value += '+';
+		}
+		function fun_clear(){
+			x.value = '';
+			y.value = '';
+		}
+		function fun_remove(){
+           var s = x.value;
+           while (s[s.length-1]==' '){
+			   s = s.substr(0,s.length-1);
+        }
+             while (s.length>0&&s[s.length-1]!=' '){
+                 s = s.substr(0,s.length-1);
+             }
+             x.value = s;
+		}
+	</script>
+	
+	<script>
+		function ShowResult(data){
+			var y = document.getElementById('txt_result');
+			y.value = data['result'];
+		}
+	</script>
+
+	<script>
+		$('#lgbut_compute').click(function(){
+			$.ajax({
+				url:'/compute/',
+				type:'POST',
+				data:{
+					'code':$('#txt_code').val()
+				},
+				dataType:'json',
+				success:ShowResult
+			})	
+			
+		})
+	</script>
+
+	</body>
+
+</html>
